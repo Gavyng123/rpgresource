@@ -1,4 +1,4 @@
-document.querySelector('#dataForm').addEventListener('submit', function(event) {
+document.querySelector('#itemForm').addEventListener('submit', function(event) {
     event.preventDefault();
 
     let itemName = document.querySelector('#itemName').value;
@@ -7,6 +7,48 @@ document.querySelector('#dataForm').addEventListener('submit', function(event) {
 
     // Save data to the database
     fetch('http://localhost:5000/save-data', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log(data);
+
+        // Fetch updated data from the database
+        fetchData();
+    })
+    .catch((error) => {
+        console.error('Error:', error);
+    });
+});
+
+document.querySelector("#spellForm").addEventListener('submit', function(event) {
+    event.preventDefault();
+
+    let spellName = document.querySelector('#spellName').value;
+    let spellLevel = document.querySelector('#spellLevel').value;
+    let spellSchool = document.querySelector('#spellSchool').value;
+    let spellCastingTime = document.querySelector('#spellCastingTime').value;
+    let spellRange = document.querySelector('#spellRange').value;
+    let spellComponents = document.querySelector('#spellComponents').value;
+    let spellDuration = document.querySelector('#spellDuration').value;
+    let spellDescription = document.querySelector('#spellDescription').value;
+
+    let data = {
+        spellName: spellName, 
+        spellLevel: spellLevel, 
+        spellSchool: spellSchool, 
+        spellCastingTime: spellCastingTime, 
+        spellRange: spellRange, 
+        spellComponents: spellComponents, 
+        spellDuration: spellDuration, 
+        spellDescription: spellDescription
+    };
+
+    fetch('http://localhost:5000/save-spell', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'

@@ -20,6 +20,19 @@ def save_data():
         app.logger.error(f"Error saving data: {e}")
         return jsonify(error=str(e)), 400
 
+@app.route('/save-spell', methods=['POST'])
+def save_spell():
+    try:
+        data = request.get_json()
+        conn = sqlite3.connect('./../database/sqlite_database.db')
+        cur = conn.cursor()
+        cur.execute("INSERT INTO spells (spellName, spellLevel, spellDescription) VALUES (?, ?, ?)", (data['spellName'], data['spellLevel'], data['spellDescription']))
+        conn.commit()
+        return jsonify(message='OK', id=cur.lastrowid)  # Return the ID of the inserted item
+    except Exception as e:
+        app.logger.error(f"Error saving data: {e}")
+        return jsonify(error=str(e)), 400
+
 @app.route('/get-data', methods=['GET'])
 def get_data():
     try:
